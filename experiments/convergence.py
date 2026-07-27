@@ -1,5 +1,14 @@
+
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))          # runnable without pip install -e .
+DATA = ROOT / "data"; DATA.mkdir(exist_ok=True)
+FIGS = ROOT / "figures"; FIGS.mkdir(exist_ok=True)
+
 import numpy as np
-from gsx import SNLP, grid_scheme, midpoints
+from hfgs import SNLP, grid_scheme, midpoints
 
 np.set_printoptions(precision=12)
 

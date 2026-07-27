@@ -1,8 +1,17 @@
+
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))          # runnable without pip install -e .
+DATA = ROOT / "data"; DATA.mkdir(exist_ok=True)
+FIGS = ROOT / "figures"; FIGS.mkdir(exist_ok=True)
+
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from gsx import SNLP, grid_scheme, midpoints, finite_horizon
+from hfgs import SNLP, grid_scheme, midpoints, finite_horizon
 
 plt.rcParams.update({"font.size": 8.5, "axes.grid": True, "grid.alpha": .3,
                      "figure.dpi": 200, "axes.linewidth": .6,
@@ -57,11 +66,11 @@ ax[1].set_xlabel("$u$")
 ax[1].set_ylabel("error $/\\,h^{2}$")
 ax[1].set_title("(b) error profile at $J=8$, uncorrected", fontsize=8.5)
 ax[1].legend(fontsize=6.5)
-fig.tight_layout(); fig.savefig("fig1_convergence.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig(FIGS / "fig1_convergence.png"); plt.close(fig)
 print("fig1 done; error/h^2 envelope max", np.abs(meas / h ** 2).max())
 
 # ---------------------------------------------------------------- Figure 2
-ts = np.load("credit_ts.npy"); lad = np.load("credit_ladder.npy")
+ts = np.load(DATA / "credit_ts.npy"); lad = np.load(DATA / "credit_ladder.npy")
 fig, ax = plt.subplots(1, 2, figsize=(7.0, 2.7))
 ax[0].plot(ts[:, 0], ts[:, 2], "o-", color="#1f4e79", ms=3, lw=1.1)
 ax[0].set_xlabel("maturity $T$ (years)"); ax[0].set_ylabel("credit spread (bp)")
@@ -72,7 +81,7 @@ msk = (xx > 0.05) & (xx < 1.6)
 ax[1].plot(np.exp(-xx[msk]), sp[msk], color="#1f4e79", lw=1.1)
 ax[1].set_xlabel("leverage $D/V$"); ax[1].set_ylabel("5y spread (bp)")
 ax[1].set_title("(b) the whole ladder, one FFT pass", fontsize=8.5)
-fig.tight_layout(); fig.savefig("fig2_credit.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig(FIGS / "fig2_credit.png"); plt.close(fig)
 print("fig2 done")
 
 # ---------------------------------------------------------------- Figure 3
@@ -93,7 +102,7 @@ ax[0].set_ylabel("$P(\\mathrm{backlog}\\geq B$ in 60 s$)$")
 ax[0].set_ylim(1e-6, 1.5)
 ax[0].legend(fontsize=6.3); ax[0].set_title("(a) buffer ladder", fontsize=8.5)
 
-fr = np.load("frontier.npy")
+fr = np.load(DATA / "frontier.npy")
 fin = np.isfinite(fr[:, 0])
 ax[1].plot(fr[fin, 0], fr[fin, 2], "o-", color="#1f4e79", ms=3, lw=1.1,
            label="total")
@@ -106,5 +115,5 @@ ax[1].text(46, fr[~fin, 2][0] + .4, "no offloading", fontsize=6.5, ha="right")
 ax[1].set_xscale("log"); ax[1].set_xlabel("offload threshold $M$ (ktok)")
 ax[1].set_ylabel("cost (replica-equivalents)")
 ax[1].legend(fontsize=6.3); ax[1].set_title("(b) offload frontier", fontsize=8.5)
-fig.tight_layout(); fig.savefig("fig3_serving.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig(FIGS / "fig3_serving.png"); plt.close(fig)
 print("fig3 done")

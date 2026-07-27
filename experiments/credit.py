@@ -1,8 +1,17 @@
 """Application 1 -- finite-maturity credit under a spectrally negative Levy
 firm-value model, with recovery that depends on the overshoot at default."""
+
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))          # runnable without pip install -e .
+DATA = ROOT / "data"; DATA.mkdir(exist_ok=True)
+FIGS = ROOT / "figures"; FIGS.mkdir(exist_ok=True)
+
 import time
 import numpy as np
-from gsx import SNLP, grid_scheme, midpoints, finite_horizon
+from hfgs import SNLP, grid_scheme, midpoints, finite_horizon
 
 rng = np.random.default_rng(20260727)
 
@@ -126,5 +135,5 @@ for lv in (0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3):
     dsp = (sprv[i + 1] - sprv[i - 1]) / (2 * h)
     print(f"    {lv:.2f}   {xs[i]:.4f}   {pdv[i]:.6f}    {sprv[i]:8.2f}    {dsp:10.2f}")
 
-np.save("credit_ladder.npy", np.vstack([xs[:1 << 12], pdv[:1 << 12], sprv[:1 << 12]]))
-np.save("credit_ts.npy", np.array(rows))
+np.save(DATA / "credit_ladder.npy", np.vstack([xs[:1 << 12], pdv[:1 << 12], sprv[:1 << 12]]))
+np.save(DATA / "credit_ts.npy", np.array(rows))

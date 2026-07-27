@@ -1,12 +1,13 @@
 """
-gsx.py -- Gerber-Shiu / first-passage functionals of a spectrally negative Levy
+core.py -- Gerber-Shiu / first-passage functionals of a spectrally negative Levy
 process by a *filtered, half-shifted* Fourier scheme.
 
 Accompanies the paper
 
-    "Half-shifted Fourier inversion for finite-horizon first-passage
-     functionals of spectrally negative Levy processes, with applications to
-     credit, capacity planning and differentiable risk layers."
+    "Half-shifted Fourier inversion for finite-horizon Gerber-Shiu
+     functionals: fourth-order accuracy at first-order cost, exact
+     sensitivities, and applications to credit, capacity planning and
+     differentiable design."
 
 Model
 -----

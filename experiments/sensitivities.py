@@ -1,5 +1,14 @@
+
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))          # runnable without pip install -e .
+DATA = ROOT / "data"; DATA.mkdir(exist_ok=True)
+FIGS = ROOT / "figures"; FIGS.mkdir(exist_ok=True)
+
 import numpy as np
-from gsx import SNLP, grid_scheme, midpoints, dLxi_dc, dLxi_dlam
+from hfgs import SNLP, grid_scheme, midpoints, dLxi_dc, dLxi_dlam
 
 print("Exact sensitivities vs closed form / central differences")
 print("="*74)

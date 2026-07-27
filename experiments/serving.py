@@ -5,10 +5,19 @@
 (3) The scheme as a differentiable layer: exact gradients that keep the
     fourth-order rate because the *corrector* is differentiated too.
 """
+
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))          # runnable without pip install -e .
+DATA = ROOT / "data"; DATA.mkdir(exist_ok=True)
+FIGS = ROOT / "figures"; FIGS.mkdir(exist_ok=True)
+
 import time
 import numpy as np
-from gsx import (SNLP, grid_scheme, midpoints, finite_horizon, threshold,
-                 dLxi_dc, dLxi_dlam, euler_invert, boundary_from)
+from hfgs import (SNLP, grid_scheme, midpoints, finite_horizon, threshold,
+                  dLxi_dc, dLxi_dlam, euler_invert, boundary_from)
 
 W = np.array([0.70, 0.28, 0.02])
 MEANS = np.array([0.15, 0.80, 6.00])
@@ -138,7 +147,7 @@ for M in (2.0, 3.0, 4.0, 6.0, 8.0, 10.0, 12.0, 16.0, 24.0, 48.0, np.inf):
 print(f"  optimum M* ~ {best[1]} ktok: {best[0]:.3f} replica-equivalents vs "
       f"{rows[-1][3]:.3f} unmanaged  ({100*(1-best[0]/rows[-1][3]):.1f}% cheaper)")
 print(f"  [{time.time()-t0:.1f} s for {len(rows)} complete designs]")
-np.save("frontier.npy", np.array([[m if np.isfinite(m) else np.inf, c, t]
+np.save(DATA / "frontier.npy", np.array([[m if np.isfinite(m) else np.inf, c, t]
                                   for m, _, c, t in rows]))
 
 print()

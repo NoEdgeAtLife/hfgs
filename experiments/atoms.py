@@ -1,6 +1,15 @@
+
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))          # runnable without pip install -e .
+DATA = ROOT / "data"; DATA.mkdir(exist_ok=True)
+FIGS = ROOT / "figures"; FIGS.mkdir(exist_ok=True)
+
 import numpy as np
 from scipy.integrate import quad
-from gsx import SNLP, grid_scheme, boundary_from
+from hfgs import SNLP, grid_scheme, boundary_from
 
 W=np.array([0.70,0.28,0.02]); BR=1.0/np.array([0.15,0.80,6.00]); LAM=120.0
 def ref_at(md,d,rho,x,gam=1.0):
