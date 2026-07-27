@@ -11,7 +11,7 @@ X_t = u + c·t + σB_t − L_t,    τ = inf{t : X_t < 0}
 
 The same object is finite-time ruin, first-passage default with overshoot-dependent
 recovery, and transient overflow of a storage system. This repository is the
-reference implementation for the paper in [`paper/`](paper/paper.pdf).
+reference implementation for the paper.
 
 <p align="center">
   <img src="figures/fig1_convergence.png" width="100%"
@@ -140,10 +140,7 @@ hfgs/
 │   ├── atoms.py              kinks induced by an atom in the Levy measure
 │   └── make_figures.py       figures 1-3
 ├── figures/                  generated PNGs (committed)
-├── data/                     intermediate .npy arrays (gitignored)
-└── paper/
-    ├── paper.tex
-    └── paper.pdf
+└── data/                     intermediate .npy arrays (gitignored)
 ```
 
 ## Reproducing the paper
@@ -163,12 +160,6 @@ python experiments/make_figures.py     # Figures 1-3               [~2 min]
 
 `make_figures.py` reads arrays written by `credit.py` and `serving.py` into `data/`,
 so run those two first.
-
-Rebuild the paper with:
-
-```bash
-cd paper && pdflatex paper.tex && pdflatex paper.tex
-```
 
 ## Selected results
 
